@@ -4,7 +4,7 @@ const ImageInputForm = () => {
   return (
     <div>
       <input type='text' />
-      <button>Cher-ify</button>
+      <button>Cher-ify Me</button>
     </div>
   )
 }
