@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import ImageInputForm from './Components/ImageInputForm'
 import Nav from './Components/Nav'
+import Webcam from './Components/Webcam'
 import './App.css'
 
 class App extends Component {
@@ -9,6 +10,7 @@ class App extends Component {
       <div className='App'>
         <Nav />
         <ImageInputForm />
+        <Webcam />
       </div>
     )
   }
