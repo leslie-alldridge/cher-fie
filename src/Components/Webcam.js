@@ -122,7 +122,7 @@ const Webcam = () => {
           <button onClick='takePhoto()'>Take Photo</button>
         </div>
 
-        <canvas class='photo' />
+        <canvas class='photo' ref={c => (this.context = c.getContext('2d'))} />
         <video class='player' />
         <div class='strip' />
       </div>
