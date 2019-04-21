@@ -1,5 +1,6 @@
 import React from 'react'
 import cher from '../ewscripps.png'
+import './Nav.css'
 
 const Nav = () => {
   return (
