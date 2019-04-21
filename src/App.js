@@ -3,7 +3,6 @@ import Webcam from 'react-webcam'
 import Clarifai from 'clarifai'
 // import ImageInputForm from './Components/ImageInputForm'
 // import Nav from './Components/Nav'
-// import Webcam from './Components/Webcam'
 import SnappedImage from './Components/SnappedImage'
 import './App.css'
 
@@ -43,20 +42,9 @@ class App extends Component {
   }
 
   capture = () => {
-    console.log('Snapped')
-
     const imageSrc = this.webcam.getScreenshot()
 
     const b54string = imageSrc.replace('data:image/jpeg;base64,', '')
-
-    // const photoTaken = document.querySelector('.photoTaken')
-
-    // const imageNode = document.createElement('img')
-    // imageNode.setAttribute('src', imageSrc)
-    // imageNode.setAttribute('height', '768')
-    // imageNode.setAttribute('width', '1024')
-
-    // photoTaken.appendChild(imageNode)
 
     app.models
       .predict(Clarifai.FACE_DETECT_MODEL, { base64: b54string })
