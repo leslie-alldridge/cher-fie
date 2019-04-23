@@ -1,6 +1,5 @@
-const cher = [
-  '../media/cher/3e6da66de88618fd121d2fe0fe8be593.png',
-  '../media/cher/61Q2kudPEAL.png',
-  '../media/cher/a0101f464cdefca52f3bd088821ccf58.png'
-]
+import cher1 from '../media/cher/1.png'
+import cher2 from '../media/cher/2.png'
+import cher3 from '../media/cher/3.png'
 
+export const cher = [cher1, cher2, cher3]
