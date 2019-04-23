@@ -1,22 +1,26 @@
 import React from 'react'
+import { cher } from './cher'
 
 const SnappedImage = ({ imageSrc, box }) => {
-  const mappedBox = box.length
-    ? box.map((item, i) => (
-        <div
-          key={i}
-          className='bounding_box'
-          style={{
-            top: item.top + '%',
-            right: item.right + '%',
-            bottom: item.bottom + '%',
-            left: item.left + '%'
-          }}
-        />
-      ))
-    : ''
+  function randomCher() {
+    // return cher[Math.floor(Math.random() * cher.length)]
+    console.log(cher)
+  }
+  randomCher()
 
-    console.log(mappedBox)
+  const mappedBox = box.length
+    ? box.map((item, i) => {
+        const style = {
+          top: item.top + '%',
+          right: item.right + '%',
+          bottom: item.bottom + '%',
+          left: item.left + '%'
+          // backgroundImage: `url('${randomCher()}')`
+        }
+
+        return <div key={i} className='bounding_box' style={{style}} />
+      })
+    : ''
 
   return (
     <div className='snappedImage__wrapper'>
