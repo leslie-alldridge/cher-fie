@@ -15,7 +15,7 @@ class App extends Component {
     this.state = {
       imageSrc: '',
       box: [],
-      picUrl: ''
+      screenshotUrl: ''
     }
   }
 
@@ -55,23 +55,34 @@ class App extends Component {
       })
       .catch(err => console.log('oopsie poopsie doo, failed to Cher-ify', err))
 
-    fetch('http://localhost:3000/api/v1/images', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json'
-      },
-      body: JSON.stringify({
-        image: {
-          imageUrl: imageSrc
+    // this.uploadImage(imageSrc)
+  }
+
+  uploadImage = image => {
+    const url = '/upload-face'
+    const data = new FormData()
+
+    fetch(image)
+      .then(res => res.blob())
+      .then(blob => {
+        data.append('file', blob, 'face.jpg')
+
+        const options = {
+          method: 'post',
+          contentType: false,
+          body: data
         }
-      })
-    })
-      .then(res => res.json())
-      .then(image => {
-        this.setState({
-          picUrl: image.imageUrl
-        })
+
+        fetch(url, options)
+          .then(result => result.json())
+          .then(result => {
+            console.log(result)
+
+            this.setState({
+              screenshotUrl: result.fileurl,
+              lastJsonResponse: result
+            })
+          })
       })
   }
 
