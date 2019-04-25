@@ -14,7 +14,8 @@ class App extends Component {
 
     this.state = {
       imageSrc: '',
-      box: []
+      box: [],
+      picUrl: ''
     }
   }
 
@@ -53,6 +54,25 @@ class App extends Component {
         this.displayFaceBox(this.calculateFaceLocation(response))
       })
       .catch(err => console.log('oopsie poopsie doo, failed to Cher-ify', err))
+
+    fetch('http://localhost:3000/api/v1/images', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json'
+      },
+      body: JSON.stringify({
+        image: {
+          imageUrl: imageSrc
+        }
+      })
+    })
+      .then(res => res.json())
+      .then(image => {
+        this.setState({
+          picUrl: image.imageUrl
+        })
+      })
   }
 
   render() {
@@ -79,7 +99,8 @@ class App extends Component {
         <div className='capture__btn' onClick={this.capture}>
           <span className='capture__btn-text'>Cher-ify</span>
         </div>
-        <SnappedImage imageSrc={this.state.imageSrc} box={this.state.box} />
+        {/* <SnappedImage imageSrc={this.state.imageSrc} box={this.state.box} /> */}
+        <img src={this.state.pic} alt='' />
       </div>
     )
   }
