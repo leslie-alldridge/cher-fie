@@ -7,6 +7,14 @@ import './App.css'
 
 const app = new Clarifai.App({ apiKey: 'd364ccf87cf5403d8c18879b2b60c24c' })
 
+function DisplaySnap({ imageSrc, box }) {
+  if (!imageSrc) {
+    return null
+  }
+
+  return <SnappedImage imageSrc={imageSrc} box={box} alt={'Cherfie taken'} />
+}
+
 class App extends Component {
   constructor(props) {
     super(props)
@@ -53,37 +61,7 @@ class App extends Component {
         this.displayFaceBox(this.calculateFaceLocation(response))
       })
       .catch(err => console.log('oopsie poopsie doo, failed to Cher-ify', err))
-
-    // this.uploadImage(imageSrc)
   }
-
-  // uploadImage = image => {
-  //   const url = '/upload-face'
-  //   const data = new FormData()
-
-  //   fetch(image)
-  //     .then(res => res.blob())
-  //     .then(blob => {
-  //       data.append('file', blob, 'face.jpg')
-
-  //       const options = {
-  //         method: 'post',
-  //         contentType: false,
-  //         body: data
-  //       }
-
-  //       fetch(url, options)
-  //         .then(result => result.json())
-  //         .then(result => {
-  //           console.log(result)
-
-  //           this.setState({
-  //             screenshotUrl: result.fileurl,
-  //             lastJsonResponse: result
-  //           })
-  //         })
-  //     })
-  // }
 
   render() {
     const videoConstraints = {
@@ -109,12 +87,7 @@ class App extends Component {
         <div className='capture__btn' onClick={this.capture}>
           <span className='capture__btn-text'>Cher-ify</span>
         </div>
-        <SnappedImage
-          imageSrc={this.state.imageSrc}
-          box={this.state.box}
-          alt={'Cherfie taken'}
-        />
-        {/* <img src={this.state.pic} alt='' /> */}
+        <DisplaySnap imageSrc={this.state.imageSrc} box={this.state.box} />
       </div>
     )
   }
