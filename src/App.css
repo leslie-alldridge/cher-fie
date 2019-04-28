@@ -4,7 +4,7 @@
 
 .webcam {
   z-index: -1;
-  width: 100vw;
+  /* width: 100vw; */
   height: 100vh;
   padding: 2rem;
 }
@@ -41,7 +41,8 @@
   /* background-color: black; */
   /* background-image: url('./media/cher/1.png'); */
   background-repeat: no-repeat;
-  background-size: contain;
+  /* background-size: contain; */
+  background-size: 100% 100%;
   background-position: center;
   /* display: -ms-flexbox; */
   /* display: flex; */

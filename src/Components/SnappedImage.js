@@ -5,7 +5,7 @@ function randomCher() {
   return cher[Math.floor(Math.random() * cher.length)]
 }
 
-const SnappedImage = ({ imageSrc, box }) => {
+const SnappedImage = ({ imageSrc, box, alt }) => {
   const mappedBox = box.length
     ? box.map((item, i) => {
         const style = {
@@ -22,7 +22,7 @@ const SnappedImage = ({ imageSrc, box }) => {
 
   return (
     <div className='snappedImage__wrapper'>
-      <img className='snappedImage' src={imageSrc} alt='Cher-fie taken' />
+      <img className='snappedImage' src={imageSrc} alt={alt} />
       {mappedBox}
     </div>
   )
