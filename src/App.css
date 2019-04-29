@@ -9,6 +9,10 @@
   padding: 2rem;
 }
 
+video {
+  background-color: #000000;
+}
+
 .capture__btn {
   position: fixed;
   bottom: 6vh;

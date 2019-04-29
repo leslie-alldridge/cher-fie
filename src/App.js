@@ -7,14 +7,6 @@ import './App.css'
 
 const app = new Clarifai.App({ apiKey: 'd364ccf87cf5403d8c18879b2b60c24c' })
 
-function DisplaySnap({ imageSrc, box }) {
-  if (!imageSrc) {
-    return null
-  }
-
-  return <SnappedImage imageSrc={imageSrc} box={box} alt={'Cherfie taken'} />
-}
-
 class App extends Component {
   constructor(props) {
     super(props)
@@ -85,9 +77,15 @@ class App extends Component {
           />
         </div>
         <div className='capture__btn' onClick={this.capture}>
-          <span className='capture__btn-text'>Cher-ify</span>
+          <span className='capture__btn-text'>Snap out of it</span>
         </div>
-        <DisplaySnap imageSrc={this.state.imageSrc} box={this.state.box} />
+        {this.state.imageSrc && (
+          <SnappedImage
+            imageSrc={this.state.imageSrc}
+            box={this.state.box}
+            alt={'Cherfie taken'}
+          />
+        )}
       </div>
     )
   }
