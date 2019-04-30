@@ -13,7 +13,8 @@ class App extends Component {
 
     this.state = {
       imageSrc: '',
-      box: []
+      box: [],
+      snapped: false
       // screenshotUrl: ''
     }
   }
@@ -42,6 +43,8 @@ class App extends Component {
   }
 
   capture = () => {
+    this.setState({ snapped: true })
+
     const imageSrc = this.webcam.getScreenshot()
 
     const b54string = imageSrc.replace('data:image/jpeg;base64,', '')
@@ -57,8 +60,8 @@ class App extends Component {
 
   render() {
     const videoConstraints = {
-      width: 1280,
-      height: 720,
+      width: '100',
+      height: '100',
       facingMode: 'user'
     }
 
@@ -66,26 +69,26 @@ class App extends Component {
       <div className='App'>
         {/* <Nav /> */}
         <div className='webcam'>
-          <Webcam
-            audio={false}
-            // height={100 + '%'}
-            height={100 + '%'}
-            width={100 + '%'}
-            ref={this.setRef}
-            screenshotFormat='image/jpeg'
-            videoConstraints={videoConstraints}
-          />
+          {!this.state.snapped ? (
+            <Webcam
+              audio={false}
+              height={100 + '%'}
+              width={100 + '%'}
+              ref={this.setRef}
+              screenshotFormat='image/jpeg'
+              videoConstraints={videoConstraints}
+            />
+          ) : (
+            <SnappedImage
+              imageSrc={this.state.imageSrc}
+              box={this.state.box}
+              alt={'Cherfie taken'}
+            />
+          )}
         </div>
         <div className='capture__btn' onClick={this.capture}>
           <span className='capture__btn-text'>Snap out of it</span>
         </div>
-        {this.state.imageSrc && (
-          <SnappedImage
-            imageSrc={this.state.imageSrc}
-            box={this.state.box}
-            alt={'Cherfie taken'}
-          />
-        )}
       </div>
     )
   }
