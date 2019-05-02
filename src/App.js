@@ -60,8 +60,8 @@ class App extends Component {
 
   render() {
     const videoConstraints = {
-      width: '100',
-      height: '100',
+      // width: 400,
+      // height: 200,
       facingMode: 'user'
     }
 
@@ -72,8 +72,8 @@ class App extends Component {
           {!this.state.snapped ? (
             <Webcam
               audio={false}
-              height={100 + '%'}
-              width={100 + '%'}
+              // height={'100%'}
+              // width={'100%'}
               ref={this.setRef}
               screenshotFormat='image/jpeg'
               videoConstraints={videoConstraints}
