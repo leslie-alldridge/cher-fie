@@ -3,6 +3,7 @@ import Webcam from 'react-webcam'
 import Clarifai from 'clarifai'
 // import Nav from './Components/Nav'
 import SnappedImage from './Components/SnappedImage'
+// import Button from './Components/Button'
 import './App.css'
 
 const app = new Clarifai.App({ apiKey: 'd364ccf87cf5403d8c18879b2b60c24c' })
@@ -14,8 +15,7 @@ class App extends Component {
     this.state = {
       imageSrc: '',
       box: [],
-      snapped: false
-      // screenshotUrl: ''
+      showSnap: false
     }
   }
 
@@ -42,52 +42,64 @@ class App extends Component {
     this.setState({ box })
   }
 
-  capture = () => {
-    this.setState({ snapped: true })
-
+  handleCapture = () => {
     const imageSrc = this.webcam.getScreenshot()
-
     const b54string = imageSrc.replace('data:image/jpeg;base64,', '')
 
     app.models
       .predict(Clarifai.FACE_DETECT_MODEL, { base64: b54string })
       .then(response => {
-        this.setState({ imageSrc: imageSrc })
+        this.setState({ showSnap: true, imageSrc: imageSrc })
         this.displayFaceBox(this.calculateFaceLocation(response))
       })
-      .catch(err => console.log('oopsie poopsie doo, failed to Cher-ify', err))
+      .catch(err => console.log('oopsie doo, failed to Cher-ify', err))
+  }
+
+  handleClose = () => {
+    this.setState({ showSnap: false })
   }
 
   render() {
     const videoConstraints = {
-      // width: 400,
-      // height: 200,
       facingMode: 'user'
     }
 
     return (
       <div className='App'>
-        {/* <Nav /> */}
-        <div className='webcam'>
-          {!this.state.snapped ? (
+        <div className='container'>
+          <div className='webcam_wrapper'>
             <Webcam
               audio={false}
-              // height={'100%'}
-              // width={'100%'}
               ref={this.setRef}
               screenshotFormat='image/jpeg'
               videoConstraints={videoConstraints}
             />
-          ) : (
-            <SnappedImage
-              imageSrc={this.state.imageSrc}
-              box={this.state.box}
-              alt={'Cherfie taken'}
-            />
-          )}
-        </div>
-        <div className='capture__btn' onClick={this.capture}>
-          <span className='capture__btn-text'>Snap out of it</span>
+            {this.state.showSnap ? (
+              <div className='snappedImage_container'>
+                <SnappedImage
+                  imageSrc={this.state.imageSrc}
+                  box={this.state.box}
+                  alt={'Oh Snap!'}
+                  handleClose={this.handleClose}
+                />
+              </div>
+            ) : null}
+
+            {this.state.showSnap ? (
+              <div className='btn btn__close' onClick={this.handleClose}>
+                <span className='capture__btn-text'>X</span>
+              </div>
+            ) : (
+              <div className='btn btn__snap' onClick={this.handleCapture}>
+                <span className='capture__btn-text'>Take a Cher-fie</span>
+              </div>
+            )}
+            {/* <Button
+            handleCapture={this.handleCapture}
+            handleClose={this.handleClose}
+            showSnap={this.state.showSnap}
+          /> */}
+          </div>
         </div>
       </div>
     )
