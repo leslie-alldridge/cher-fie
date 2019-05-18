@@ -5,7 +5,7 @@ import SnappedImage from './Components/SnappedImage'
 // import ErrorBoundary from './Components/ErrorBoundary'
 // import Button from './Components/Button'
 import './App.css'
-
+import html2canvas from 'html2canvas'
 
 class App extends Component {
   constructor(props) {
@@ -14,7 +14,8 @@ class App extends Component {
     this.state = {
       imageSrc: '',
       box: [],
-      showSnap: false
+      showSnap: false,
+      imgData: ''
     }
   }
 
@@ -37,7 +38,6 @@ class App extends Component {
     })
       .then(response => response.json())
       .then(response => {
-        console.log(response)
         this.setState({ showSnap: true, imageSrc: imageSrc })
         this.displayFaceBox(this.calculateFaceLocation(response))
       })
@@ -61,6 +61,25 @@ class App extends Component {
 
   displayFaceBox = box => {
     this.setState({ box })
+  }
+
+  handleDownload = () => {
+    this.takeScreenshot()
+  }
+
+  takeScreenshot = () => {
+    let snappedImg = document.querySelector('.snappedImage_wrapper')
+
+    html2canvas(snappedImg, { useCORS: true }).then(canvas => {
+      let imgData = canvas.toDataURL('image/png')
+      this.setState({ imgData })
+
+      // return <img src={this.state.imgData} alt='screenshot' />
+    })
+  }
+
+  renderCanvas = () => {
+    return <img src={this.state.imgData} alt='screenshot' />
   }
 
   handleClose = () => {
@@ -89,18 +108,24 @@ class App extends Component {
                   imageSrc={this.state.imageSrc}
                   box={this.state.box}
                   alt={'Oh Snap!'}
-                  handleClose={this.handleClose}
+                  // handleClose={this.handleClose}
                 />
                 <div className='btn btn__close' onClick={this.handleClose}>
                   <span className='capture__btn-text'>X</span>
                 </div>
-                <p>Cloudinary URL: {this.state.imageSrc}</p>
               </div>
             ) : (
               <div className='btn btn__snap' onClick={this.handleCapture}>
                 <span className='capture__btn-text'>Take a Cher-fie</span>
               </div>
             )}
+            <a onClick={this.handleDownload}>download</a>
+            {/* {this.state.imgData && (
+              <a href={this.state.imgData} download='myImage.png' alt=''>
+                download
+              </a>
+            )} */}
+            {this.renderCanvas()}
           </div>
         </div>
       </div>
