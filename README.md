@@ -1,6 +1,8 @@
-### `npm start`
+Why take a selfie when you can ~ Cher-fie ~ ?
 
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+See [this](http://caniuse.com/#feat=stream) for browser compatibility.
+
+### `npm start`
+This app is hosted on [http://localhost:3000](http://localhost:3000)
 
 

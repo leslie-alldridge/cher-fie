@@ -1,12 +1,11 @@
 import React, { Component } from 'react'
 import Webcam from 'react-webcam'
-import Clarifai from 'clarifai'
 // import Nav from './Components/Nav'
 import SnappedImage from './Components/SnappedImage'
+// import ErrorBoundary from './Components/ErrorBoundary'
 // import Button from './Components/Button'
 import './App.css'
 
-const app = new Clarifai.App({ apiKey: 'd364ccf87cf5403d8c18879b2b60c24c' })
 
 class App extends Component {
   constructor(props) {
@@ -21,6 +20,28 @@ class App extends Component {
 
   setRef = webcam => {
     this.webcam = webcam
+  }
+
+  handleCapture = () => {
+    const imageSrc = this.webcam.getScreenshot()
+    const b54string = imageSrc.replace('data:image/jpeg;base64,', '')
+
+    fetch('http://localhost:7777/imageurl', {
+      method: 'post',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        b54string: b54string
+      })
+    })
+      .then(response => response.json())
+      .then(response => {
+        console.log(response)
+        this.setState({ showSnap: true, imageSrc: imageSrc })
+        this.displayFaceBox(this.calculateFaceLocation(response))
+      })
+      .catch(err => console.log('oopsie doo, failed to Cher-ify', err))
   }
 
   calculateFaceLocation = data => {
@@ -42,19 +63,6 @@ class App extends Component {
     this.setState({ box })
   }
 
-  handleCapture = () => {
-    const imageSrc = this.webcam.getScreenshot()
-    const b54string = imageSrc.replace('data:image/jpeg;base64,', '')
-
-    app.models
-      .predict(Clarifai.FACE_DETECT_MODEL, { base64: b54string })
-      .then(response => {
-        this.setState({ showSnap: true, imageSrc: imageSrc })
-        this.displayFaceBox(this.calculateFaceLocation(response))
-      })
-      .catch(err => console.log('oopsie doo, failed to Cher-ify', err))
-  }
-
   handleClose = () => {
     this.setState({ showSnap: false })
   }
@@ -74,6 +82,7 @@ class App extends Component {
               screenshotFormat='image/jpeg'
               videoConstraints={videoConstraints}
             />
+
             {this.state.showSnap ? (
               <div className='snappedImage_container'>
                 <SnappedImage
@@ -82,23 +91,16 @@ class App extends Component {
                   alt={'Oh Snap!'}
                   handleClose={this.handleClose}
                 />
-              </div>
-            ) : null}
-
-            {this.state.showSnap ? (
-              <div className='btn btn__close' onClick={this.handleClose}>
-                <span className='capture__btn-text'>X</span>
+                <div className='btn btn__close' onClick={this.handleClose}>
+                  <span className='capture__btn-text'>X</span>
+                </div>
+                <p>Cloudinary URL: {this.state.imageSrc}</p>
               </div>
             ) : (
               <div className='btn btn__snap' onClick={this.handleCapture}>
                 <span className='capture__btn-text'>Take a Cher-fie</span>
               </div>
             )}
-            {/* <Button
-            handleCapture={this.handleCapture}
-            handleClose={this.handleClose}
-            showSnap={this.state.showSnap}
-          /> */}
           </div>
         </div>
       </div>

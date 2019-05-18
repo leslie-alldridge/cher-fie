@@ -21,7 +21,7 @@ const SnappedImage = ({ imageSrc, box, alt, handleClose }) => {
     : ''
 
   return (
-    <div className='snappedImage__wrapper'>
+    <div className='snappedImage_wrapper'>
       <img className='snappedImage' src={imageSrc} alt={alt} />
       {mappedBox}
       {/* <div className='btn btn__close' onClick={handleClose}>
