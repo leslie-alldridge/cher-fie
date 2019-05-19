@@ -2,8 +2,8 @@ import React, { Component } from 'react'
 import Webcam from 'react-webcam'
 import html2canvas from 'html2canvas'
 import SnappedImage from './Components/SnappedImage'
-import Button from './Components/Button'
 // import ErrorBoundary from './Components/ErrorBoundary'
+import Button from './Components/Button'
 import './App.css'
 
 class App extends Component {
@@ -27,10 +27,10 @@ class App extends Component {
 
   handleCapture = () => {
     console.log('handleCapture is called')
-    this.setState({ loading: true })
-
     const imageSrc = this.webcam.getScreenshot()
     const b54string = imageSrc.replace('data:image/jpeg;base64,', '')
+
+    this.setState({ loading: true })
 
     fetch('http://localhost:7777/imageurl', {
       method: 'post',
@@ -79,9 +79,7 @@ class App extends Component {
 
       fetch(screenshot)
         .then(res => res.blob())
-        .then(blob => {
-          this.setState({ screenshot: URL.createObjectURL(blob) })
-        })
+        .then(blob => this.setState({ screenshot: URL.createObjectURL(blob) }))
     })
   }
 
@@ -115,16 +113,12 @@ class App extends Component {
             screenshotFormat='image/jpeg'
             videoConstraints={videoConstraints}
           />
-          <div
-            className={`snappedImage_container ${this.props.loading &&
-              'black'}`}
-            ref={this.captureRef}
-          >
+          <div className='snappedImage_container' ref={this.captureRef}>
             <SnappedImage
               imageSrc={this.state.imageSrc}
               box={this.state.box}
               showSnap={this.state.showSnap}
-              randomCher={this.state.randomCher}
+              loading={this.state.loading}
             />
           </div>
           <Button

@@ -5,7 +5,14 @@ function randomCher() {
   return cher[Math.floor(Math.random() * cher.length)]
 }
 
-const SnappedImage = ({ imageSrc, box, alt, handleClose }) => {
+const SnappedImage = ({ showSnap, imageSrc, box }) => {
+  console.log('snapped is rendered')
+  console.log(cher[randomCher])
+  
+  if (!showSnap) {
+    return null
+  }
+
   const mappedBox = box.length
     ? box.map((item, i) => {
         const style = {
@@ -22,11 +29,8 @@ const SnappedImage = ({ imageSrc, box, alt, handleClose }) => {
 
   return (
     <div className='snappedImage_wrapper'>
-      <img className='snappedImage' src={imageSrc} alt={alt} />
+      <img className='snappedImage' src={imageSrc} alt='' />
       {mappedBox}
-      {/* <div className='btn btn__close' onClick={handleClose}>
-        <span className='capture__btn-text'>X</span>
-      </div> */}
     </div>
   )
 }
