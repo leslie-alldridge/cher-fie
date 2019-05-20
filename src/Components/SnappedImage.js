@@ -5,10 +5,9 @@ function randomCher() {
   return cher[Math.floor(Math.random() * cher.length)]
 }
 
-const SnappedImage = ({ showSnap, imageSrc, box }) => {
+const SnappedImage = ({ showSnap, webcamURL, box }) => {
   console.log('snapped is rendered')
-  console.log(cher[randomCher])
-  
+
   if (!showSnap) {
     return null
   }
@@ -29,7 +28,7 @@ const SnappedImage = ({ showSnap, imageSrc, box }) => {
 
   return (
     <div className='snappedImage_wrapper'>
-      <img className='snappedImage' src={imageSrc} alt='' />
+      <img className='snappedImage' src={webcamURL} alt='' />
       {mappedBox}
     </div>
   )

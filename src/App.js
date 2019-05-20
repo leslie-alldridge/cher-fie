@@ -2,8 +2,8 @@ import React, { Component } from 'react'
 import Webcam from 'react-webcam'
 import html2canvas from 'html2canvas'
 import SnappedImage from './Components/SnappedImage'
-import Button from './Components/Button'
-// import ErrorBoundary from './Components/ErrorBoundary'
+import Buttons from './Components/Buttons'
+// import RenderCanvas from './Components/RenderCanvas'
 import './App.css'
 
 class App extends Component {
@@ -11,10 +11,10 @@ class App extends Component {
     super(props)
 
     this.state = {
-      imageSrc: '',
       box: [],
+      webcamURL: '',
+      screenshotURL: [],
       showSnap: false,
-      screenshot: '',
       loading: false
     }
 
@@ -29,8 +29,8 @@ class App extends Component {
     console.log('handleCapture is called')
     this.setState({ loading: true })
 
-    const imageSrc = this.webcam.getScreenshot()
-    const b54string = imageSrc.replace('data:image/jpeg;base64,', '')
+    const webcamURL = this.webcam.getScreenshot()
+    const b64string = webcamURL.replace('data:image/jpeg;base64,', '')
 
     fetch('http://localhost:7777/imageurl', {
       method: 'post',
@@ -38,12 +38,12 @@ class App extends Component {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        b54string: b54string
+        b64string: b64string
       })
     })
       .then(response => response.json())
       .then(response => {
-        this.setState({ showSnap: true, imageSrc: imageSrc })
+        this.setState({ showSnap: true, webcamURL: webcamURL })
         this.displayFaceBox(this.calculateFaceLocation(response))
       })
       .catch(err => console.log('oopsie doo, failed to Cher-ify', err))
@@ -80,23 +80,29 @@ class App extends Component {
       fetch(screenshot)
         .then(res => res.blob())
         .then(blob => {
-          this.setState({ screenshot: URL.createObjectURL(blob) })
+          this.setState({
+            screenshotURL: [
+              URL.createObjectURL(blob),
+              ...this.state.screenshotURL
+            ],
+            showSnap: false
+          })
         })
     })
   }
 
   renderCanvas = () => {
-    console.log('rendercanvas is called')
-
-    return (
-      <a href={this.state.screenshot} download='download.png'>
-        <img className='screenshot_img' src={this.state.screenshot} alt='' />
-      </a>
-    )
+    return this.state.screenshotURL.map((url, i) => {
+      return (
+        <a href={url} download='download.png'>
+          <img className='screenshot_img' src={url} alt='' />
+        </a>
+      )
+    })
   }
 
   handleClose = () => {
-    this.setState({ showSnap: false })
+    this.handleScreenshot()
   }
 
   render() {
@@ -108,32 +114,32 @@ class App extends Component {
 
     return (
       <div className='App'>
-        <div className='webcam_wrapper'>
-          <Webcam
-            audio={false}
-            ref={this.setRef}
-            screenshotFormat='image/jpeg'
-            videoConstraints={videoConstraints}
-          />
-          <div
-            className={`snappedImage_container ${this.props.loading &&
-              'black'}`}
-            ref={this.captureRef}
-          >
-            <SnappedImage
-              imageSrc={this.state.imageSrc}
-              box={this.state.box}
+        <div className='webcam_container'>
+          <div className='webcam_wrapper'>
+            {/* <div className='loading_container' /> */}
+            <Webcam
+              audio={false}
+              ref={this.setRef}
+              screenshotFormat='image/jpeg'
+              videoConstraints={videoConstraints}
+            />
+            <div className={`snappedImage_container`} ref={this.captureRef}>
+              <SnappedImage
+                webcamURL={this.state.webcamURL}
+                box={this.state.box}
+                showSnap={this.state.showSnap}
+                randomCher={this.state.randomCher}
+              />
+            </div>
+            <Buttons
               showSnap={this.state.showSnap}
-              randomCher={this.state.randomCher}
+              handleClose={this.handleClose}
+              handleCapture={this.handleCapture}
+              handleScreenshot={this.handleScreenshot}
             />
           </div>
-          <Button
-            showSnap={this.state.showSnap}
-            handleClose={this.handleClose}
-            handleCapture={this.handleCapture}
-            handleScreenshot={this.handleScreenshot}
-          />
         </div>
+        <div className='renderCanvas_container'>{this.renderCanvas()}</div>
       </div>
     )
   }
