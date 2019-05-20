@@ -3,6 +3,7 @@ import Webcam from 'react-webcam'
 import html2canvas from 'html2canvas'
 import SnappedImage from './Components/SnappedImage'
 import Buttons from './Components/Buttons'
+import Loading from './Components/Loading'
 // import RenderCanvas from './Components/RenderCanvas'
 import './App.css'
 
@@ -94,7 +95,7 @@ class App extends Component {
   renderCanvas = () => {
     return this.state.screenshotURL.map((url, i) => {
       return (
-        <a href={url} download='download.png'>
+        <a href={url} download='download.png' key={i}>
           <img className='screenshot_img' src={url} alt='' />
         </a>
       )
@@ -137,6 +138,7 @@ class App extends Component {
               handleCapture={this.handleCapture}
               handleScreenshot={this.handleScreenshot}
             />
+            {this.state.loading && <Loading />}
           </div>
         </div>
         <div className='renderCanvas_container'>{this.renderCanvas()}</div>
