@@ -1,5 +1,4 @@
 import React from 'react'
-import '../App.css'
 import loadingCher from '../media/Cher_-_Casablanca.jpg'
 
 const Loading = () => {

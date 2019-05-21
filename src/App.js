@@ -5,6 +5,7 @@ import SnappedImage from './Components/SnappedImage'
 import Buttons from './Components/Buttons'
 import Loading from './Components/Loading'
 import RenderCanvas from './Components/RenderCanvas'
+import DisplayError from './Components/DisplayError'
 
 import './App.css'
 
@@ -17,7 +18,8 @@ class App extends Component {
       webcamURL: '',
       screenshotURL: [],
       showSnap: false,
-      loading: false
+      loading: false,
+      hasError: false
     }
 
     this.captureRef = React.createRef()
@@ -49,7 +51,7 @@ class App extends Component {
       })
       .catch(err => {
         console.log('oopsie doo, failed to Cher-ify', err)
-        console.log('Failed to Cher-ify')
+        this.setState({ loading: false, hasError: true, showSnap: false })
       })
   }
 
@@ -94,8 +96,19 @@ class App extends Component {
     this.handleScreenshot()
   }
 
+  handleBackTo = () => {
+    this.setState({ hasError: false, box: [] })
+  }
+
   render() {
-    const { webcamURL, box, showSnap, screenshotURL, loading } = this.state
+    const {
+      webcamURL,
+      box,
+      showSnap,
+      screenshotURL,
+      loading,
+      hasError
+    } = this.state
     const {
       setRef,
       captureRef,
@@ -113,6 +126,7 @@ class App extends Component {
         <div className='webcam_container'>
           <div className='webcam_wrapper'>
             {loading && <Loading />}
+            {hasError && <DisplayError handleBackTo={this.handleBackTo} />}
             <Webcam
               audio={false}
               ref={setRef}
