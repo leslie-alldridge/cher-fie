@@ -4,7 +4,8 @@ import html2canvas from 'html2canvas'
 import SnappedImage from './Components/SnappedImage'
 import Buttons from './Components/Buttons'
 import Loading from './Components/Loading'
-// import RenderCanvas from './Components/RenderCanvas'
+import RenderCanvas from './Components/RenderCanvas'
+
 import './App.css'
 
 class App extends Component {
@@ -27,7 +28,6 @@ class App extends Component {
   }
 
   handleCapture = () => {
-    console.log('handleCapture is called')
     this.setState({ loading: true })
 
     const webcamURL = this.webcam.getScreenshot()
@@ -47,17 +47,17 @@ class App extends Component {
         this.setState({ showSnap: true, webcamURL: webcamURL })
         this.displayFaceBox(this.calculateFaceLocation(response))
       })
-      .catch(err => console.log('oopsie doo, failed to Cher-ify', err))
+      .catch(err => {
+        console.log('oopsie doo, failed to Cher-ify', err)
+        console.log('Failed to Cher-ify')
+      })
   }
 
   displayFaceBox = box => {
-    console.log('displayfacebox is called')
     this.setState({ box, loading: false })
   }
 
   calculateFaceLocation = data => {
-    console.log('calculateFaceLoc is called')
-
     const detectedFaces = data.outputs[0].data.regions
 
     return detectedFaces.map(face => {
@@ -73,8 +73,6 @@ class App extends Component {
   }
 
   handleScreenshot = () => {
-    console.log('handleScreenshot is called')
-
     html2canvas(this.captureRef.current).then(canvas => {
       let screenshot = canvas.toDataURL('image/png')
 
@@ -92,22 +90,19 @@ class App extends Component {
     })
   }
 
-  renderCanvas = () => {
-    return this.state.screenshotURL.map((url, i) => {
-      return (
-        <a href={url} download='download.png' key={i}>
-          <img className='screenshot_img' src={url} alt='' />
-        </a>
-      )
-    })
-  }
-
   handleClose = () => {
     this.handleScreenshot()
   }
 
   render() {
-    console.log('render')
+    const { webcamURL, box, showSnap, screenshotURL, loading } = this.state
+    const {
+      setRef,
+      captureRef,
+      handleClose,
+      handleCapture,
+      handleScreenshot
+    } = this
 
     const videoConstraints = {
       facingMode: 'user'
@@ -117,31 +112,29 @@ class App extends Component {
       <div className='App'>
         <div className='webcam_container'>
           <div className='webcam_wrapper'>
-            {/* <div className='loading_container' /> */}
+            {loading && <Loading />}
             <Webcam
               audio={false}
-              ref={this.setRef}
+              ref={setRef}
               screenshotFormat='image/jpeg'
               videoConstraints={videoConstraints}
             />
-            <div className={`snappedImage_container`} ref={this.captureRef}>
+            <div className={`snappedImage_container`} ref={captureRef}>
               <SnappedImage
-                webcamURL={this.state.webcamURL}
-                box={this.state.box}
-                showSnap={this.state.showSnap}
-                randomCher={this.state.randomCher}
+                webcamURL={webcamURL}
+                box={box}
+                showSnap={showSnap}
               />
             </div>
             <Buttons
-              showSnap={this.state.showSnap}
-              handleClose={this.handleClose}
-              handleCapture={this.handleCapture}
-              handleScreenshot={this.handleScreenshot}
+              showSnap={showSnap}
+              handleClose={handleClose}
+              handleCapture={handleCapture}
+              handleScreenshot={handleScreenshot}
             />
-            {this.state.loading && <Loading />}
           </div>
         </div>
-        <div className='renderCanvas_container'>{this.renderCanvas()}</div>
+        <RenderCanvas screenshotURL={screenshotURL} />
       </div>
     )
   }

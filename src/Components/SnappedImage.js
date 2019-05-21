@@ -6,8 +6,6 @@ function randomCher() {
 }
 
 const SnappedImage = ({ showSnap, webcamURL, box }) => {
-  console.log('snapped is rendered')
-
   if (!showSnap) {
     return null
   }

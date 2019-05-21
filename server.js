@@ -1,5 +1,5 @@
 const express = require('express')
-const bodyParser = require('body-parser') // goes hand in hand with express
+const bodyParser = require('body-parser') 
 const cors = require('cors')
 const Clarifai = require('clarifai')
 
