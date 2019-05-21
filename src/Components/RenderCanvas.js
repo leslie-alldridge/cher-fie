@@ -1,7 +1,6 @@
 import React from 'react'
 
 const RenderCanvas = ({ screenshotURL }) => {
-  
   function renderScreenshot() {
     return screenshotURL.map((url, i) => {
       return (

@@ -23,6 +23,7 @@ class App extends Component {
     }
 
     this.captureRef = React.createRef()
+    this.scrollView = React.createRef()
   }
 
   setRef = webcam => {
@@ -30,6 +31,7 @@ class App extends Component {
   }
 
   handleCapture = () => {
+    window.scrollTo(0, 0)
     this.setState({ loading: true })
 
     const webcamURL = this.webcam.getScreenshot()
@@ -94,6 +96,12 @@ class App extends Component {
 
   handleClose = () => {
     this.handleScreenshot()
+
+    this.scrollView.current.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start',
+      inline: 'nearest'
+    })
   }
 
   handleBackTo = () => {
@@ -114,7 +122,8 @@ class App extends Component {
       captureRef,
       handleClose,
       handleCapture,
-      handleScreenshot
+      handleScreenshot,
+      handleBackTo
     } = this
 
     const videoConstraints = {
@@ -126,7 +135,7 @@ class App extends Component {
         <div className='webcam_container'>
           <div className='webcam_wrapper'>
             {loading && <Loading />}
-            {hasError && <DisplayError handleBackTo={this.handleBackTo} />}
+            {hasError && <DisplayError handleBackTo={handleBackTo} />}
             <Webcam
               audio={false}
               ref={setRef}
@@ -148,7 +157,9 @@ class App extends Component {
             />
           </div>
         </div>
-        <RenderCanvas screenshotURL={screenshotURL} />
+        <div ref={this.scrollView}>
+          <RenderCanvas screenshotURL={screenshotURL} />
+        </div>
       </div>
     )
   }

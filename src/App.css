@@ -9,9 +9,10 @@
 
 .webcam_wrapper {
   max-width: 1800px;
-  height: 90vh;
-  width: 90vw;
+  height: 88vh;
+  width: 88vw;
   position: relative;
+  border: 2px #000000 solid;
 }
 
 .snappedImage_wrapper {
@@ -35,7 +36,7 @@
   display: grid;
   grid-gap: 15px;
   grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-  margin: 0 5vw 0 5vw;
+  margin: 0 6vw 0 6vw;
 }
 
 .loading_wrapper {
@@ -67,17 +68,17 @@
 .btn {
   cursor: pointer;
   display: table;
-  font-size: 1.9em;
+  font-size: 1.7rem;
   z-index: 5;
   font-family: fengardoneue;
 }
 
 .btn_snap {
   background: #ffffff;
-  bottom: 7vh;
+  bottom: 9vh;
   left: 50%;
   margin: 0 auto;
-  padding: 17px 23px 19px 23px;
+  padding: 17px 22px 19px 22px;
   position: fixed;
   transform: translateX(-50%);
 }
