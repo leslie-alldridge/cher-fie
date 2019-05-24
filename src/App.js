@@ -1,15 +1,15 @@
-import React, { Component } from "react";
-import Webcam from "react-webcam";
-import html2canvas from "html2canvas";
+import React, { Component } from 'react';
+import Webcam from 'react-webcam';
+import html2canvas from 'html2canvas';
 import {
   SnappedImage,
   Buttons,
   Loading,
   RenderCanvas,
   DisplayError
-} from "./components/Index";
+} from './components/Index';
 
-import "./App.css";
+import './App.css';
 
 class App extends Component {
   constructor(props) {
@@ -17,7 +17,7 @@ class App extends Component {
 
     this.state = {
       box: [],
-      webcamURL: "",
+      webcamURL: '',
       screenshotURL: [],
       showSnap: false,
       loading: false,
@@ -35,14 +35,13 @@ class App extends Component {
   handleCapture = () => {
     window.scrollTo(0, 0);
     this.setState({ loading: true });
-
     const webcamURL = this.webcam.getScreenshot();
-    const b64string = webcamURL.replace("data:image/jpeg;base64,", "");
+    const b64string = webcamURL.replace('data:image/jpeg;base64,', '');
 
-    fetch("http://localhost:7777/imageurl", {
-      method: "post",
+    fetch('http://localhost:7777/imageurl', {
+      method: 'post',
       headers: {
-        "Content-Type": "application/json"
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify({
         b64string: b64string
@@ -54,7 +53,7 @@ class App extends Component {
         this.displayFaceBox(this.calculateFaceLocation(response));
       })
       .catch(err => {
-        console.log("oopsie doo, failed to Cher-ify", err);
+        console.log('oopsie doo, failed to Cher-ify', err);
         this.setState({ loading: false, hasError: true, showSnap: false });
       });
   };
@@ -80,7 +79,7 @@ class App extends Component {
 
   handleScreenshot = () => {
     html2canvas(this.captureRef.current).then(canvas => {
-      let screenshot = canvas.toDataURL("image/png");
+      let screenshot = canvas.toDataURL('image/png');
 
       fetch(screenshot)
         .then(res => res.blob())
@@ -100,9 +99,9 @@ class App extends Component {
     this.handleScreenshot();
 
     this.scrollView.current.scrollIntoView({
-      behavior: "smooth",
-      block: "start",
-      inline: "nearest"
+      behavior: 'smooth',
+      block: 'start',
+      inline: 'nearest'
     });
   };
 
@@ -129,19 +128,19 @@ class App extends Component {
     } = this;
 
     const videoConstraints = {
-      facingMode: "user"
+      facingMode: 'user'
     };
 
     return (
-      <div className="App">
-        <div className="webcam_container">
-          <div className="webcam_wrapper">
+      <div className='App'>
+        <div className='webcam_container'>
+          <div className='webcam_wrapper'>
             {loading && <Loading />}
             {hasError && <DisplayError handleBackTo={handleBackTo} />}
             <Webcam
               audio={false}
               ref={setRef}
-              screenshotFormat="image/jpeg"
+              screenshotFormat='image/jpeg'
               videoConstraints={videoConstraints}
             />
             <div className={`snappedImage_container`} ref={captureRef}>
