@@ -1,6 +1,4 @@
 
-
-
 # Cher-fie
 
 Why take a selfie when you can ~ Cher-fie ~ ?
@@ -39,9 +37,10 @@ This app runs on [http://localhost:3000](http://localhost:3000)
 - [ ] Test with multiple faces
 - [ ] Fix scroll-to-view for first screenshots
 - [ ] Add database for storing Cher-fies
+- [ ] Look into Redux
 - [ ] Fix CSS responsibility 
 - [ ] Add more Cher pics
-- [ ] 
+- [ ] Deploy 
 
 
 

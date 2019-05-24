@@ -11,7 +11,7 @@ app.use(bodyParser.json({ limit: '50mb' }))
 app.use(cors())
 
 const clarifai_app = new Clarifai.App({
-  apiKey: 'd364ccf87cf5403d8c18879b2b60c24c'
+  apiKey: '158d85cf78eb4b40ad98f5b8681c6f19'
 })
 
 app.post('/imageurl', (req, res) => {
